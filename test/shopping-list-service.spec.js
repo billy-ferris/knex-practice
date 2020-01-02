@@ -9,7 +9,6 @@ describe('Shopping List Service object', function() {
             name: 'First test item!',
             price: '6.00',
             date_added: new Date('2020-01-22T16:28:32.615Z'),
-            checked: false,
             category: 'Main'
         },
         {
@@ -17,7 +16,6 @@ describe('Shopping List Service object', function() {
             name: 'Second test item!',
             price: '12.00',
             date_added: new Date('2020-01-22T16:28:32.615Z'),
-            checked: true,
             category: 'Main'
         },
         {
@@ -25,7 +23,6 @@ describe('Shopping List Service object', function() {
             name: 'Third test item!',
             price: '21.00',
             date_added: new Date('2020-01-22T16:28:32.615Z'),
-            checked: true,
             category: 'Main'
         },
         {
@@ -33,7 +30,6 @@ describe('Shopping List Service object', function() {
             name: 'Fourth test item!',
             price: '4.00',
             date_added: new Date('2020-01-22T16:28:32.615Z'),
-            checked: false,
             category: 'Main'
         },
     ]
@@ -59,9 +55,13 @@ describe('Shopping List Service object', function() {
         })
 
         it(`getAllItems() resolves all items from 'shopping_list' table`, () => {
+            const expectedItems = testItems.map(item => ({
+                ...item,
+                checked: false,
+            }))
             return ShoppingListService.getAllItems(db)
                 .then(actual => {
-                    expect(actual).to.eql(testItems)
+                    expect(actual).to.eql(expectedItems)
                 })
         })
     })
@@ -72,6 +72,10 @@ describe('Shopping List Service object', function() {
                 .then(actual => {
                     expect(actual).to.eql([])
                 })
+        })
+
+        it(`insertItem() inserts a new item and resolves the new item with an 'id'`, () => {
+            
         })
     })
 })
