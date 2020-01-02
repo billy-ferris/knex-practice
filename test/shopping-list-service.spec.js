@@ -75,7 +75,24 @@ describe('Shopping List Service object', function() {
         })
 
         it(`insertItem() inserts a new item and resolves the new item with an 'id'`, () => {
-            
+            const newItem = {
+                name: 'Test new name',
+                price: '99.00',
+                date_added: new Date('2020-01-01T00:00:00.000Z'),
+                category: 'Breakfast',
+                checked: true
+            }
+            return ShoppingListService.insertItem(db, newItem)
+                .then(actual => {
+                    expect(actual).to.eql({
+                        id: 1,
+                        name: newItem.name,
+                        price: newItem.price,
+                        date_added: newItem.date_added,
+                        category: newItem.category,
+                        checked: newItem.checked
+                    })
+                })
         })
     })
 })
