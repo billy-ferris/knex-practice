@@ -81,7 +81,7 @@ describe('Shopping List Service object', function() {
                 })
         })
 
-        it(`deleteItem() removes an item by id from 'shopping_list'`, () => {
+        it(`deleteItem() removes an item by id from the 'shopping_list' table`, () => {
             const itemId = 3
             return ShoppingListService.deleteItem(db, itemId)
                 .then(() => ShoppingListService.getAllItems(db))
@@ -93,6 +93,26 @@ describe('Shopping List Service object', function() {
                             checked: false
                         }))
                     expect(allItems).to.eql(expected)
+                })
+        })
+
+        it(`updateItem() updates an item from the 'shopping_list' table`, () => {
+            const idofItemToUpdate = 3
+            const newItemData = {
+                name: 'updated title',
+                price: '1.99',
+                date_added: new Date(),
+                checked: true
+            }
+            const originalItemData = testItems[idofItemToUpdate - 1]
+            return ShoppingListService.updateItem(db, idofItemToUpdate, newItemData)
+                .then(() => ShoppingListService.getById(db, idofItemToUpdate))
+                .then(item => {
+                    expect(item).to.eql({
+                        id: idofItemToUpdate,
+                        ...originalItemData,
+                        ...newItemData
+                    })
                 })
         })
     })
