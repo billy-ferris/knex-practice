@@ -48,7 +48,7 @@ describe('Shopping List Service object', function() {
     after(() => db.destroy())
 
     context(`Given 'shopping_list' has data`, () => {
-        before(() => {
+        beforeEach(() => {
             return db
                 .into('shopping_list')
                 .insert(testItems)
@@ -62,6 +62,22 @@ describe('Shopping List Service object', function() {
             return ShoppingListService.getAllItems(db)
                 .then(actual => {
                     expect(actual).to.eql(expectedItems)
+                })
+        })
+
+        it(`getById() resolves an item by id from 'shopping_list'`, () => {
+            const idToGet = 3
+            const thirdTestItem = testItems[idToGet - 1]
+            return ShoppingListService.getById(db, idToGet)
+                .then(actual => {
+                    expect(actual).to.eql({
+                        id: idToGet,
+                        name: thirdTestItem.name,
+                        price: thirdTestItem.price,
+                        date_added: thirdTestItem.date_added,
+                        category: thirdTestItem.category,
+                        checked: false
+                    })
                 })
         })
     })
