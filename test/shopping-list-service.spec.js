@@ -80,6 +80,21 @@ describe('Shopping List Service object', function() {
                     })
                 })
         })
+
+        it(`deleteItem() removes an item by id from 'shopping_list'`, () => {
+            const itemId = 3
+            return ShoppingListService.deleteItem(db, itemId)
+                .then(() => ShoppingListService.getAllItems(db))
+                .then(allItems => {
+                    const expected = testItems
+                        .filter(item => item.id !== itemId)
+                        .map(item => ({
+                            ...item,
+                            checked: false
+                        }))
+                    expect(allItems).to.eql(expected)
+                })
+        })
     })
 
     context(`Given 'shopping_list' has no data`, () => {
